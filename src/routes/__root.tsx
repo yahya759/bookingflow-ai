@@ -87,6 +87,13 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const isArabic = pathname === "/";
+  useEffect(() => {
+    const html = document.documentElement;
+    html.setAttribute("dir", isArabic ? "rtl" : "ltr");
+    html.setAttribute("lang", isArabic ? "ar" : "en");
+  }, [isArabic]);
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
