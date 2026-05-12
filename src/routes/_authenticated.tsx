@@ -16,15 +16,15 @@ function AuthLayout() {
   }, [loading, user, nav]);
 
   if (loading || !user) {
-    return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">Loading...</div>;
+    return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">جارٍ التحميل...</div>;
   }
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
-        <AppSidebar />
+      <div className="flex min-h-screen w-full bg-background flex-row-reverse">
+        <AppSidebar side="right" />
         <SidebarInset>
-          <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
+          <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur flex-row-reverse">
             <SidebarTrigger />
           </header>
           <main className="flex-1 p-6">
