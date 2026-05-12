@@ -21,17 +21,15 @@ function AuthLayout() {
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background flex-row-reverse">
-        <AppSidebar side="right" />
-        <SidebarInset>
-          <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur flex-row-reverse">
-            <SidebarTrigger />
-          </header>
-          <main className="flex-1 p-6">
-            <Outlet />
-          </main>
-        </SidebarInset>
-      </div>
+      <AppSidebar side="right" />
+      <SidebarInset>
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-end gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
+          <SidebarTrigger />
+        </header>
+        <main className="flex-1 p-6">
+          <Outlet />
+        </main>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
