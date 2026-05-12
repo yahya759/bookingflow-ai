@@ -166,3 +166,12 @@
   .bg-hero-glow { background-image: var(--gradient-hero); }
   .font-display { font-family: var(--font-display); }
 }
+
+/* ── RTL Sidebar Fix ── */
+[data-sidebar="sidebar"] {
+  right: 0 !important;
+  left: auto !important;
+}
+.group\/sidebar-wrapper {
+  flex-direction: row-reverse !important;
+}
