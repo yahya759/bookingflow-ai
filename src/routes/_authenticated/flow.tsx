@@ -10,14 +10,14 @@ import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/flow")({
-  head: () => ({ meta: [{ title: "Flow Builder — Bookly" }] }),
+  head: () => ({ meta: [{ title: "منشئ الخطوات — بوكلي" }] }),
   component: FlowPage,
 });
 
 interface Step { id: string; step_key: string; position: number; enabled: boolean; custom_label: string | null; }
 
 const ICONS: Record<string, any> = { welcome: MessageSquare, service: Scissors, staff: Users, date: Calendar, time: Clock, confirm: CheckCircle2 };
-const DEFAULT_LABEL: Record<string,string> = { welcome:"Welcome", service:"Choose Service", staff:"Choose Staff", date:"Choose Date", time:"Choose Time", confirm:"Confirmation" };
+const DEFAULT_LABEL: Record<string,string> = { welcome:"ترحيب", service:"اختر الخدمة", staff:"اختر الموظف", date:"اختر التاريخ", time:"اختر الوقت", confirm:"تأكيد الحجز" };
 
 function FlowPage() {
   const { business } = useBusiness();
@@ -51,14 +51,14 @@ function FlowPage() {
 
   const saveLabel = async (id: string, label: string) => {
     await supabase.from("flow_steps").update({ custom_label: label }).eq("id", id);
-    toast.success("Updated");
+    toast.success("تم التحديث");
   };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Flow builder</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Customize the steps customers go through when booking.</p>
+        <h1 className="text-2xl font-bold">منشئ الخطوات</h1>
+        <p className="mt-1 text-sm text-muted-foreground">خصّص الخطوات التي يمر بها العميل عند الحجز.</p>
       </div>
       <div className="space-y-3">
         {steps.map((s, i) => {
@@ -70,7 +70,7 @@ function FlowPage() {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">Step {i + 1}</div>
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground">خطوة {i + 1}</div>
                   <Input
                     className="mt-1.5 border-none px-0 text-base font-semibold shadow-none focus-visible:ring-0"
                     defaultValue={s.custom_label ?? DEFAULT_LABEL[s.step_key]}

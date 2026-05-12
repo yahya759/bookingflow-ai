@@ -12,7 +12,7 @@ import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/settings")({
-  head: () => ({ meta: [{ title: "Settings — Bookly" }] }),
+  head: () => ({ meta: [{ title: "الإعدادات — بوكلي" }] }),
   component: SettingsPage,
 });
 
@@ -42,8 +42,7 @@ function SettingsPage() {
     setBusy(true);
     const slug = form.slug.toLowerCase().replace(/[^a-z0-9-]+/g, "-");
     const { error } = await supabase.from("businesses").update({
-      name: form.name,
-      slug,
+      name: form.name, slug,
       description: form.description || null,
       welcome_message: form.welcome_message || null,
       confirmation_message: form.confirmation_message || null,
@@ -52,52 +51,52 @@ function SettingsPage() {
     }).eq("id", business.id);
     setBusy(false);
     if (error) return toast.error(error.message);
-    toast.success("Settings saved");
+    toast.success("تم حفظ الإعدادات");
     refresh();
   };
 
   const publicUrl = business ? `${typeof window !== "undefined" ? window.location.origin : ""}/booking/${business.slug}` : "";
-  const copy = () => { navigator.clipboard.writeText(publicUrl); toast.success("Link copied"); };
+  const copy = () => { navigator.clipboard.writeText(publicUrl); toast.success("تم نسخ الرابط"); };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Settings</h1>
-        <p className="mt-1 text-sm text-muted-foreground">Business details and booking behavior.</p>
+        <h1 className="text-2xl font-bold">الإعدادات</h1>
+        <p className="mt-1 text-sm text-muted-foreground">تفاصيل العمل وإعدادات الحجز.</p>
       </div>
 
       <Card className="p-6">
-        <h2 className="font-semibold">Public booking link</h2>
+        <h2 className="font-semibold">رابط الحجز العام</h2>
         <div className="mt-3 flex items-center gap-2 rounded-lg border border-border/60 bg-secondary/40 p-2 text-sm">
           <code className="flex-1 truncate px-2">{publicUrl}</code>
-          <Button size="sm" variant="ghost" onClick={copy}><Copy className="h-3.5 w-3.5 mr-1"/>Copy</Button>
-          <a href={publicUrl} target="_blank" rel="noreferrer"><Button size="sm" variant="ghost"><ExternalLink className="h-3.5 w-3.5 mr-1"/>Open</Button></a>
+          <Button size="sm" variant="ghost" onClick={copy}><Copy className="h-3.5 w-3.5 ml-1"/>نسخ</Button>
+          <a href={publicUrl} target="_blank" rel="noreferrer"><Button size="sm" variant="ghost"><ExternalLink className="h-3.5 w-3.5 ml-1"/>فتح</Button></a>
         </div>
       </Card>
 
       <Card className="space-y-4 p-6">
-        <h2 className="font-semibold">Business</h2>
-        <div><Label>Business name</Label><Input className="mt-1.5" value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})}/></div>
-        <div><Label>URL slug</Label><Input className="mt-1.5" value={form.slug} onChange={(e)=>setForm({...form, slug: e.target.value})}/></div>
-        <div><Label>Description</Label><Textarea className="mt-1.5" value={form.description} onChange={(e)=>setForm({...form, description: e.target.value})}/></div>
+        <h2 className="font-semibold">معلومات العمل</h2>
+        <div><Label>اسم العمل</Label><Input className="mt-1.5" value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})}/></div>
+        <div><Label>الرابط المختصر (Slug)</Label><Input className="mt-1.5" value={form.slug} onChange={(e)=>setForm({...form, slug: e.target.value})}/></div>
+        <div><Label>الوصف</Label><Textarea className="mt-1.5" value={form.description} onChange={(e)=>setForm({...form, description: e.target.value})}/></div>
       </Card>
 
       <Card className="space-y-4 p-6">
-        <h2 className="font-semibold">Booking flow</h2>
-        <div><Label>Welcome message</Label><Textarea className="mt-1.5" value={form.welcome_message} onChange={(e)=>setForm({...form, welcome_message: e.target.value})}/></div>
-        <div><Label>Confirmation message</Label><Textarea className="mt-1.5" value={form.confirmation_message} onChange={(e)=>setForm({...form, confirmation_message: e.target.value})}/></div>
+        <h2 className="font-semibold">تدفق الحجز</h2>
+        <div><Label>رسالة الترحيب</Label><Textarea className="mt-1.5" value={form.welcome_message} onChange={(e)=>setForm({...form, welcome_message: e.target.value})}/></div>
+        <div><Label>رسالة التأكيد</Label><Textarea className="mt-1.5" value={form.confirmation_message} onChange={(e)=>setForm({...form, confirmation_message: e.target.value})}/></div>
         <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
-          <div><div className="text-sm font-medium">Allow staff selection</div><div className="text-xs text-muted-foreground">Customers can pick a specific staff member.</div></div>
+          <div><div className="text-sm font-medium">السماح باختيار الموظف</div><div className="text-xs text-muted-foreground">يمكن للعملاء اختيار موظف محدد.</div></div>
           <Switch checked={form.allow_staff_selection} onCheckedChange={(v)=>setForm({...form, allow_staff_selection: v})}/>
         </div>
         <div className="flex items-center justify-between rounded-lg border border-border/60 p-3">
-          <div><div className="text-sm font-medium">Instant confirmation</div><div className="text-xs text-muted-foreground">Auto-confirm bookings immediately.</div></div>
+          <div><div className="text-sm font-medium">التأكيد الفوري</div><div className="text-xs text-muted-foreground">تأكيد الحجوزات تلقائياً فور الاستلام.</div></div>
           <Switch checked={form.instant_confirmation} onCheckedChange={(v)=>setForm({...form, instant_confirmation: v})}/>
         </div>
       </Card>
 
       <div className="flex justify-end">
-        <Button onClick={save} disabled={busy} className="bg-accent text-accent-foreground">{busy ? "Saving..." : "Save changes"}</Button>
+        <Button onClick={save} disabled={busy} className="bg-accent text-accent-foreground">{busy ? "جارٍ الحفظ..." : "حفظ التغييرات"}</Button>
       </div>
     </div>
   );

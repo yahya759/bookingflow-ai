@@ -9,11 +9,11 @@ import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/hours")({
-  head: () => ({ meta: [{ title: "Working Hours — Bookly" }] }),
+  head: () => ({ meta: [{ title: "ساعات العمل — بوكلي" }] }),
   component: HoursPage,
 });
 
-const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const DAYS = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
 
 interface WH {
   id: string; day_of_week: number; open_time: string; close_time: string;
@@ -48,15 +48,15 @@ function HoursPage() {
     );
     const results = await Promise.all(updates);
     setBusy(false);
-    if (results.some((r) => r.error)) toast.error("Some rows failed to save");
-    else toast.success("Working hours saved");
+    if (results.some((r) => r.error)) toast.error("فشل حفظ بعض الصفوف");
+    else toast.success("تم حفظ ساعات العمل");
   };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">Working hours</h1>
-        <p className="mt-1 text-sm text-muted-foreground">When customers can book appointments.</p>
+        <h1 className="text-2xl font-bold">ساعات العمل</h1>
+        <p className="mt-1 text-sm text-muted-foreground">حدد الأوقات التي يمكن فيها للعملاء الحجز.</p>
       </div>
       <Card className="divide-y divide-border/60">
         {rows.map((r, i) => (
@@ -64,21 +64,21 @@ function HoursPage() {
             <div className="col-span-3 font-medium">{DAYS[r.day_of_week]}</div>
             <div className="col-span-2 flex items-center gap-2">
               <Switch checked={!r.is_closed} onCheckedChange={(v)=>update(i,{is_closed: !v})} />
-              <span className="text-xs text-muted-foreground">{r.is_closed ? "Closed" : "Open"}</span>
+              <span className="text-xs text-muted-foreground">{r.is_closed ? "مغلق" : "مفتوح"}</span>
             </div>
             {!r.is_closed ? (
               <>
                 <Input type="time" className="col-span-2" value={r.open_time?.slice(0,5)} onChange={(e)=>update(i,{open_time:e.target.value})}/>
                 <Input type="time" className="col-span-2" value={r.close_time?.slice(0,5)} onChange={(e)=>update(i,{close_time:e.target.value})}/>
-                <Input type="time" className="col-span-1.5" placeholder="Break" value={r.break_start?.slice(0,5) ?? ""} onChange={(e)=>update(i,{break_start:e.target.value || null})}/>
-                <Input type="time" className="col-span-1.5" placeholder="End" value={r.break_end?.slice(0,5) ?? ""} onChange={(e)=>update(i,{break_end:e.target.value || null})}/>
+                <Input type="time" className="col-span-2" placeholder="بداية الاستراحة" value={r.break_start?.slice(0,5) ?? ""} onChange={(e)=>update(i,{break_start:e.target.value || null})}/>
+                <Input type="time" className="col-span-1" placeholder="نهاية" value={r.break_end?.slice(0,5) ?? ""} onChange={(e)=>update(i,{break_end:e.target.value || null})}/>
               </>
-            ) : <div className="col-span-9 text-xs text-muted-foreground">Day off</div>}
+            ) : <div className="col-span-9 text-xs text-muted-foreground">يوم إجازة</div>}
           </div>
         ))}
       </Card>
       <div className="flex justify-end">
-        <Button onClick={save} disabled={busy} className="bg-accent text-accent-foreground">{busy ? "Saving..." : "Save changes"}</Button>
+        <Button onClick={save} disabled={busy} className="bg-accent text-accent-foreground">{busy ? "جارٍ الحفظ..." : "حفظ التغييرات"}</Button>
       </div>
     </div>
   );

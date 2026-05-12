@@ -9,7 +9,7 @@ import { Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/signup")({
-  head: () => ({ meta: [{ title: "Sign up — Bookly" }] }),
+  head: () => ({ meta: [{ title: "إنشاء حساب — بوكلي" }] }),
   component: SignupPage,
 });
 
@@ -25,12 +25,12 @@ function SignupPage() {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    if (password.length < 8) { toast.error("Password must be at least 8 characters"); return; }
+    if (password.length < 8) { toast.error("كلمة المرور يجب أن تكون 8 أحرف على الأقل"); return; }
     setBusy(true);
     const { error } = await signUp(email, password, fullName);
     setBusy(false);
     if (error) toast.error(error);
-    else { toast.success("Account created"); nav({ to: "/dashboard" }); }
+    else { toast.success("تم إنشاء الحساب بنجاح"); nav({ to: "/dashboard" }); }
   };
 
   return (
@@ -39,30 +39,30 @@ function SignupPage() {
       <div className="relative mx-auto flex min-h-screen max-w-md flex-col justify-center px-6 py-12">
         <Link to="/" className="mx-auto mb-8 flex items-center gap-2">
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-accent text-accent-foreground"><Sparkles className="h-5 w-5"/></div>
-          <span className="text-xl font-bold">Bookly</span>
+          <span className="text-xl font-bold">بوكلي</span>
         </Link>
         <Card className="glass p-8 shadow-elegant">
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Start building your booking assistant.</p>
+          <h1 className="text-2xl font-bold">أنشئ حسابك</h1>
+          <p className="mt-1 text-sm text-muted-foreground">ابدأ في بناء مساعد الحجز الخاص بك.</p>
           <form onSubmit={submit} className="mt-6 space-y-4">
             <div>
-              <Label htmlFor="name">Business / Full name</Label>
+              <Label htmlFor="name">الاسم / اسم العمل</Label>
               <Input id="name" required value={fullName} onChange={(e)=>setFullName(e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">البريد الإلكتروني</Label>
               <Input id="email" type="email" required value={email} onChange={(e)=>setEmail(e.target.value)} className="mt-1.5" />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">كلمة المرور</Label>
               <Input id="password" type="password" required minLength={8} value={password} onChange={(e)=>setPassword(e.target.value)} className="mt-1.5" />
             </div>
             <Button type="submit" disabled={busy} className="w-full bg-accent text-accent-foreground hover:opacity-90">
-              {busy ? "Creating..." : "Create account"}
+              {busy ? "جارٍ الإنشاء..." : "إنشاء الحساب"}
             </Button>
           </form>
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            Already have an account? <Link to="/login" className="text-accent hover:underline">Sign in</Link>
+            لديك حساب بالفعل؟ <Link to="/login" className="text-accent hover:underline">سجّل دخولك</Link>
           </p>
         </Card>
       </div>

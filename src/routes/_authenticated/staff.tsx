@@ -13,7 +13,7 @@ import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/staff")({
-  head: () => ({ meta: [{ title: "Staff — Bookly" }] }),
+  head: () => ({ meta: [{ title: "الموظفون — بوكلي" }] }),
   component: StaffPage,
 });
 
@@ -59,15 +59,15 @@ function StaffPage() {
     if (form.services.length) {
       await supabase.from("staff_services").insert(form.services.map((sid) => ({ staff_id: staffId, service_id: sid })));
     }
-    toast.success(editing ? "Staff updated" : "Staff added");
+    toast.success(editing ? "تم تحديث الموظف" : "تم إضافة الموظف");
     setOpen(false); load();
   };
 
   const remove = async (id: string) => {
-    if (!confirm("Delete this staff member?")) return;
+    if (!confirm("هل تريد حذف هذا الموظف؟")) return;
     const { error } = await supabase.from("staff").delete().eq("id", id);
     if (error) return toast.error(error.message);
-    toast.success("Deleted"); load();
+    toast.success("تم الحذف"); load();
   };
 
   const toggleSvc = (id: string) => {
@@ -78,21 +78,21 @@ function StaffPage() {
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Staff</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Your team members.</p>
+          <h1 className="text-2xl font-bold">الموظفون</h1>
+          <p className="mt-1 text-sm text-muted-foreground">أعضاء فريقك.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild><Button onClick={openNew} className="bg-accent text-accent-foreground"><Plus className="h-4 w-4 mr-1"/>Add staff</Button></DialogTrigger>
+          <DialogTrigger asChild><Button onClick={openNew} className="bg-accent text-accent-foreground"><Plus className="h-4 w-4 ml-1"/>إضافة موظف</Button></DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>{editing ? "Edit staff" : "New staff member"}</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{editing ? "تعديل الموظف" : "موظف جديد"}</DialogTitle></DialogHeader>
             <div className="space-y-4">
-              <div><Label>Name</Label><Input value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} className="mt-1.5"/></div>
-              <div><Label>Photo URL</Label><Input value={form.image_url} onChange={(e)=>setForm({...form, image_url: e.target.value})} placeholder="https://..." className="mt-1.5"/></div>
-              <div><Label>Bio</Label><Textarea value={form.bio} onChange={(e)=>setForm({...form, bio: e.target.value})} className="mt-1.5"/></div>
+              <div><Label>الاسم</Label><Input value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} className="mt-1.5"/></div>
+              <div><Label>رابط الصورة</Label><Input value={form.image_url} onChange={(e)=>setForm({...form, image_url: e.target.value})} placeholder="https://..." className="mt-1.5"/></div>
+              <div><Label>نبذة</Label><Textarea value={form.bio} onChange={(e)=>setForm({...form, bio: e.target.value})} className="mt-1.5"/></div>
               <div>
-                <Label>Assigned services</Label>
+                <Label>الخدمات المسندة</Label>
                 <div className="mt-2 max-h-40 space-y-2 overflow-auto rounded-lg border border-border/60 p-3">
-                  {services.length === 0 ? <p className="text-xs text-muted-foreground">Add services first.</p> :
+                  {services.length === 0 ? <p className="text-xs text-muted-foreground">أضف خدمات أولاً.</p> :
                     services.map((sv) => (
                       <label key={sv.id} className="flex items-center gap-2 text-sm">
                         <Checkbox checked={form.services.includes(sv.id)} onCheckedChange={()=>toggleSvc(sv.id)}/>
@@ -103,8 +103,8 @@ function StaffPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={()=>setOpen(false)}>Cancel</Button>
-              <Button onClick={save} className="bg-accent text-accent-foreground">Save</Button>
+              <Button variant="outline" onClick={()=>setOpen(false)}>إلغاء</Button>
+              <Button onClick={save} className="bg-accent text-accent-foreground">حفظ</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -113,7 +113,7 @@ function StaffPage() {
       {staff.length === 0 ? (
         <Card className="p-12 text-center">
           <Users className="mx-auto h-10 w-10 text-muted-foreground"/>
-          <p className="mt-3 text-sm text-muted-foreground">No staff yet.</p>
+          <p className="mt-3 text-sm text-muted-foreground">لا يوجد موظفون بعد.</p>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -125,7 +125,7 @@ function StaffPage() {
                   : <div className="grid h-12 w-12 place-items-center rounded-full bg-accent/10 text-accent font-semibold">{s.name.charAt(0)}</div>}
                 <div className="flex-1">
                   <h3 className="font-semibold">{s.name}</h3>
-                  <p className="text-xs text-muted-foreground">{(linked[s.id] ?? []).length} services</p>
+                  <p className="text-xs text-muted-foreground">{(linked[s.id] ?? []).length} خدمة</p>
                 </div>
                 <div className="flex gap-1">
                   <Button size="icon" variant="ghost" className="h-8 w-8" onClick={()=>openEdit(s)}><Pencil className="h-3.5 w-3.5"/></Button>
