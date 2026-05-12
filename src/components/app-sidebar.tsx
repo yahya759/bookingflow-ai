@@ -1,12 +1,9 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, Scissors, Users, Clock, Workflow,
-  CalendarCheck, Settings, Sparkles, LogOut, Sun, Moon,
+  CalendarCheck, Settings, Sparkles, LogOut, Sun, Moon, Menu, X,
 } from "lucide-react";
-import {
-  Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
-  SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarFooter,
-} from "@/components/ui/sidebar";
+import { useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useTheme } from "@/routes/__root";
 
@@ -24,55 +21,78 @@ export function AppSidebar() {
   const path = useRouterState({ select: (s) => s.location.pathname });
   const { signOut, user } = useAuth();
   const { theme, toggle } = useTheme();
+  const [open, setOpen] = useState(true);
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <Link to="/dashboard" className="flex items-center gap-2 px-2 py-2">
-          <div className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-accent-foreground">
-            <Sparkles className="h-4 w-4" />
-          </div>
-          <span className="text-base font-bold group-data-[collapsible=icon]:hidden">بوكلي</span>
-        </Link>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>القائمة</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((it) => (
-                <SidebarMenuItem key={it.url}>
-                  <SidebarMenuButton asChild isActive={path === it.url} tooltip={it.title}>
-                    <Link to={it.url}>
-                      <it.icon className="h-4 w-4" />
-                      <span>{it.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-      <SidebarFooter>
-        <div className="px-2 py-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden truncate">
-          {user?.email}
+    <>
+      {/* Desktop Sidebar - ثابت على اليمين */}
+      <aside className={`hidden md:flex flex-col fixed top-0 right-0 h-screen bg-sidebar border-l border-border z-20 transition-all duration-200 ${open ? "w-64" : "w-14"}`}>
+        {/* Header */}
+        <div className="flex items-center justify-between px-3 py-4 border-b border-border">
+          {open && (
+            <Link to="/dashboard" className="flex items-center gap-2">
+              <div className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-accent-foreground shrink-0">
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <span className="text-base font-bold">بوكلي</span>
+            </Link>
+          )}
+          {!open && (
+            <div className="grid h-8 w-8 place-items-center rounded-lg bg-accent text-accent-foreground mx-auto">
+              <Sparkles className="h-4 w-4" />
+            </div>
+          )}
         </div>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton onClick={toggle} tooltip={theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}>
-              {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              <span>{theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton onClick={() => signOut()} tooltip="تسجيل الخروج">
-              <LogOut className="h-4 w-4" />
-              <span>تسجيل الخروج</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarFooter>
-    </Sidebar>
+
+        {/* Nav */}
+        <nav className="flex-1 overflow-y-auto py-4 px-2 space-y-1">
+          {open && <p className="text-xs text-muted-foreground px-2 mb-2">القائمة</p>}
+          {items.map((it) => (
+            <Link
+              key={it.url}
+              to={it.url}
+              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
+                path === it.url
+                  ? "bg-accent/20 text-accent font-medium"
+                  : "text-foreground hover:bg-accent/10"
+              } ${!open ? "justify-center" : ""}`}
+              title={!open ? it.title : ""}
+            >
+              <it.icon className="h-4 w-4 shrink-0" />
+              {open && <span>{it.title}</span>}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Footer */}
+        <div className="border-t border-border px-2 py-3 space-y-1">
+          {open && <p className="text-xs text-muted-foreground px-2 truncate">{user?.email}</p>}
+          <button
+            onClick={toggle}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm w-full hover:bg-accent/10 transition-colors ${!open ? "justify-center" : ""}`}
+            title={theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4 shrink-0" /> : <Moon className="h-4 w-4 shrink-0" />}
+            {open && <span>{theme === "dark" ? "الوضع النهاري" : "الوضع الليلي"}</span>}
+          </button>
+          <button
+            onClick={() => signOut()}
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm w-full hover:bg-destructive/10 text-destructive transition-colors ${!open ? "justify-center" : ""}`}
+            title="تسجيل الخروج"
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            {open && <span>تسجيل الخروج</span>}
+          </button>
+        </div>
+      </aside>
+
+      {/* Toggle button */}
+      <button
+        onClick={() => setOpen(!open)}
+        className={`hidden md:flex fixed top-4 z-30 items-center justify-center h-8 w-8 rounded-lg bg-background border border-border hover:bg-accent/10 transition-all duration-200 ${open ? "right-[248px]" : "right-[44px]"}`}
+      >
+        {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+      </button>
+    </>
   );
 }

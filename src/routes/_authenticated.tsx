@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "@/lib/auth";
-import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
 export const Route = createFileRoute("/_authenticated")({
@@ -20,16 +19,14 @@ function AuthLayout() {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar side="right" />
-      <SidebarInset>
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
-          <SidebarTrigger />
-        </header>
+    <div className="min-h-screen bg-background">
+      <AppSidebar />
+      {/* المحتوى على اليسار مع مساحة للـ sidebar على اليمين */}
+      <div className="md:mr-64 transition-all duration-200">
         <main className="flex-1 p-6">
           <Outlet />
         </main>
-      </SidebarInset>
-    </SidebarProvider>
+      </div>
+    </div>
   );
 }
