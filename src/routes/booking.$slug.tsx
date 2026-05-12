@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 
 export const Route = createFileRoute("/booking/$slug")({
-  head: () => ({ meta: [{ title: "Book your appointment" }] }),
+  head: () => ({ meta: [{ title: "احجز موعدك" }] }),
   component: PublicBookingPage,
 });
 
@@ -18,6 +18,17 @@ interface Biz { id: string; name: string; slug: string; welcome_message: string 
 interface Svc { id: string; name: string; price: number; duration_minutes: number; description: string | null; }
 interface Stf { id: string; name: string; image_url: string | null; }
 interface WH { day_of_week: number; open_time: string; close_time: string; break_start: string | null; break_end: string | null; is_closed: boolean; }
+interface FlowStep { step_key: string; position: number; enabled: boolean; custom_label: string | null; }
+
+// الرسائل الافتراضية لكل خطوة
+const DEFAULT_MSGS: Record<string, string> = {
+  service: "ما هي الخدمة التي تريد حجزها؟",
+  staff: "مع من تريد الحجز؟",
+  date: "اختر التاريخ المناسب لك.",
+  time: "إليك الأوقات المتاحة:",
+  info: "أوشكنا على الانتهاء — ما اسمك ورقم هاتفك؟",
+  confirm: "تم تأكيد حجزك!",
+};
 
 type Msg = { from: "bot" | "user"; content: React.ReactNode; key: string };
 
@@ -28,6 +39,7 @@ function PublicBookingPage() {
   const [staff, setStaff] = useState<Stf[]>([]);
   const [staffSvc, setStaffSvc] = useState<Record<string, string[]>>({});
   const [hours, setHours] = useState<WH[]>([]);
+  const [flowSteps, setFlowSteps] = useState<FlowStep[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [step, setStep] = useState<"service" | "staff" | "date" | "time" | "info" | "done">("service");
@@ -41,16 +53,29 @@ function PublicBookingPage() {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // جيب الـ label من flow_steps أو استخدم الافتراضي
+  const getLabel = (key: string) => {
+    const step = flowSteps.find((s) => s.step_key === key);
+    return step?.custom_label || DEFAULT_MSGS[key] || "";
+  };
+
+  // جيب label زر "أي موظف" من flow_steps لخطوة staff
+  const anyStaffLabel = () => {
+    const step = flowSteps.find((s) => s.step_key === "staff");
+    return step?.custom_label ? `أي ${step.custom_label}` : "أي موظف متاح";
+  };
+
   useEffect(() => {
     (async () => {
       const { data: b } = await supabase.from("businesses").select("*").eq("slug", slug).maybeSingle();
       if (!b) { setLoading(false); return; }
       setBiz(b as Biz);
-      const [{ data: s }, { data: st }, { data: ss }, { data: wh }] = await Promise.all([
+      const [{ data: s }, { data: st }, { data: ss }, { data: wh }, { data: fs }] = await Promise.all([
         supabase.from("services").select("*").eq("business_id", b.id).order("created_at"),
         supabase.from("staff").select("id,name,image_url").eq("business_id", b.id),
         supabase.from("staff_services").select("staff_id, service_id"),
         supabase.from("working_hours").select("*").eq("business_id", b.id),
+        supabase.from("flow_steps").select("step_key,position,enabled,custom_label").eq("business_id", b.id).order("position"),
       ]);
       setServices((s ?? []) as Svc[]);
       setStaff((st ?? []) as Stf[]);
@@ -58,8 +83,13 @@ function PublicBookingPage() {
       (ss ?? []).forEach((r:any)=>{ (map[r.staff_id] ||= []).push(r.service_id); });
       setStaffSvc(map);
       setHours((wh ?? []) as WH[]);
+      setFlowSteps((fs ?? []) as FlowStep[]);
       setLoading(false);
-      setMsgs([{ from: "bot", key: "hello", content: b.welcome_message || `Welcome to ${b.name}! Let's book your appointment.` }]);
+
+      // رسالة الترحيب من الإعدادات أو من flow_steps
+      const welcomeStep = (fs ?? []).find((f: any) => f.step_key === "welcome");
+      const welcomeMsg = b.welcome_message || welcomeStep?.custom_label || `مرحباً في ${b.name}! دعنا نحجز موعدك.`;
+      setMsgs([{ from: "bot", key: "hello", content: welcomeMsg }]);
     })();
   }, [slug]);
 
@@ -76,18 +106,18 @@ function PublicBookingPage() {
     setSelService(s);
     addUser(s.name, `u-svc-${s.id}`);
     if (biz?.allow_staff_selection && staff.length > 0) {
-      addBot("Great! Who would you like to book with?", "b-staff");
+      addBot(getLabel("staff"), "b-staff");
       setStep("staff");
     } else {
-      addBot("Pick a date that works for you.", "b-date");
+      addBot(getLabel("date"), "b-date");
       setStep("date");
     }
   };
 
   const pickStaff = (s: Stf | "any") => {
     setSelStaff(s);
-    addUser(s === "any" ? "Any available" : s.name, `u-stf-${s === "any" ? "any" : s.id}`);
-    addBot("Perfect. What date?", "b-date");
+    addUser(s === "any" ? anyStaffLabel() : s.name, `u-stf-${s === "any" ? "any" : s.id}`);
+    addBot(getLabel("date"), "b-date");
     setStep("date");
   };
 
@@ -98,7 +128,7 @@ function PublicBookingPage() {
     const dow = d.getDay();
     const wh = hours.find((h) => h.day_of_week === dow);
     if (!wh || wh.is_closed) {
-      addBot("Sorry, we're closed that day. Pick another date.", `b-closed-${dow}`);
+      addBot("عذراً، نحن مغلقون هذا اليوم. اختر تاريخاً آخر.", `b-closed-${dow}`);
       return;
     }
     const dateStr = format(d, "yyyy-MM-dd");
@@ -109,9 +139,9 @@ function PublicBookingPage() {
     const computed = computeSlots(wh, selService.duration_minutes, (existing ?? []) as any, staffFilter);
     setSlots(computed);
     if (computed.length === 0) {
-      addBot("No available times that day. Try another date.", `b-noslot-${dateStr}`);
+      addBot("لا توجد أوقات متاحة هذا اليوم. جرب تاريخاً آخر.", `b-noslot-${dateStr}`);
     } else {
-      addBot("Here are the available times:", `b-time-${dateStr}`);
+      addBot(getLabel("time"), `b-time-${dateStr}`);
       setStep("time");
     }
   };
@@ -119,13 +149,13 @@ function PublicBookingPage() {
   const pickTime = (t: string) => {
     setSelTime(t);
     addUser(t, `u-time-${t}`);
-    addBot("Almost done — what's your name and phone number?", "b-info");
+    addBot(getLabel("info"), "b-info");
     setStep("info");
   };
 
   const submit = async () => {
     if (!biz || !selService || !selDate || !selTime || !name.trim() || !phone.trim()) {
-      toast.error("Please fill in your name and phone");
+      toast.error("يرجى إدخال اسمك ورقم هاتفك");
       return;
     }
     const [h, m] = selTime.split(":").map(Number);
@@ -144,30 +174,31 @@ function PublicBookingPage() {
     });
     if (error) return toast.error(error.message);
     addUser(`${name} · ${phone}`, "u-info");
-    addBot(biz.confirmation_message || "Your booking is confirmed. See you soon!", "b-done");
+    const confirmMsg = biz.confirmation_message || getLabel("confirm");
+    addBot(confirmMsg, "b-done");
     setStep("done");
   };
 
-  if (loading) return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">Loading...</div>;
+  if (loading) return <div className="grid min-h-screen place-items-center text-sm text-muted-foreground">جارٍ التحميل...</div>;
   if (!biz) throw notFound();
 
   return (
-    <div className="relative min-h-screen bg-background" dir="ltr">
+    <div className="relative min-h-screen bg-background" dir="rtl">
       <div className="absolute inset-0 bg-hero-glow" />
       <div className="relative mx-auto flex min-h-screen max-w-2xl flex-col px-4 py-8">
         <div className="mb-4 flex items-center gap-3">
           <div className="grid h-10 w-10 place-items-center rounded-xl bg-accent text-accent-foreground"><Sparkles className="h-5 w-5"/></div>
           <div>
             <div className="font-semibold">{biz.name}</div>
-            <div className="text-xs text-accent">● Booking Assistant</div>
+            <div className="text-xs text-accent">● مساعد الحجز</div>
           </div>
         </div>
 
         <Card className="glass flex flex-1 flex-col overflow-hidden shadow-elegant">
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-5">
             {msgs.map((m) => (
-              <div key={m.key} className={`flex ${m.from === "user" ? "justify-end" : "justify-start"}`}>
-                {m.from === "bot" && <div className="mr-2 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent/15 text-accent"><Bot className="h-3.5 w-3.5"/></div>}
+              <div key={m.key} className={`flex ${m.from === "user" ? "justify-start" : "justify-end"}`}>
+                {m.from === "bot" && <div className="ml-2 grid h-7 w-7 shrink-0 place-items-center rounded-full bg-accent/15 text-accent"><Bot className="h-3.5 w-3.5"/></div>}
                 <div className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm ${m.from === "user" ? "bg-accent text-accent-foreground" : "bg-secondary"}`}>
                   {m.content}
                 </div>
@@ -177,9 +208,9 @@ function PublicBookingPage() {
             {step === "service" && services.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1">
                 {services.map((s) => (
-                  <button key={s.id} onClick={()=>pickService(s)} className="rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-left text-sm transition hover:-translate-y-0.5 hover:border-accent">
+                  <button key={s.id} onClick={()=>pickService(s)} className="rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-right text-sm transition hover:-translate-y-0.5 hover:border-accent">
                     <div className="font-medium">{s.name}</div>
-                    <div className="mt-0.5 text-xs text-muted-foreground">{s.duration_minutes} min · ${Number(s.price).toFixed(0)}</div>
+                    <div className="mt-0.5 text-xs text-muted-foreground">{s.duration_minutes} دقيقة · {Number(s.price).toFixed(0)} ₪</div>
                   </button>
                 ))}
               </div>
@@ -187,7 +218,7 @@ function PublicBookingPage() {
 
             {step === "staff" && (
               <div className="flex flex-wrap gap-2 pt-1">
-                <button onClick={()=>pickStaff("any")} className="rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-sm hover:border-accent">Any available</button>
+                <button onClick={()=>pickStaff("any")} className="rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-sm hover:border-accent">أي موظف متاح</button>
                 {eligibleStaff.map((s) => (
                   <button key={s.id} onClick={()=>pickStaff(s)} className="flex items-center gap-2 rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-sm hover:border-accent">
                     {s.image_url ? <img src={s.image_url} className="h-6 w-6 rounded-full object-cover" alt=""/> : <div className="grid h-6 w-6 place-items-center rounded-full bg-accent/15 text-[10px] text-accent">{s.name.charAt(0)}</div>}
@@ -215,17 +246,17 @@ function PublicBookingPage() {
 
             {step === "info" && (
               <div className="space-y-2 rounded-2xl border border-border/70 bg-card/60 p-4">
-                <Input placeholder="Your name" value={name} onChange={(e)=>setName(e.target.value)}/>
-                <Input placeholder="Phone number" value={phone} onChange={(e)=>setPhone(e.target.value)}/>
-                <Button onClick={submit} className="w-full bg-accent text-accent-foreground"><Send className="h-4 w-4 mr-1"/>Confirm booking</Button>
+                <Input placeholder="اسمك" value={name} onChange={(e)=>setName(e.target.value)}/>
+                <Input placeholder="رقم الهاتف" value={phone} onChange={(e)=>setPhone(e.target.value)}/>
+                <Button onClick={submit} className="w-full bg-accent text-accent-foreground"><Send className="h-4 w-4 ml-1"/>تأكيد الحجز</Button>
               </div>
             )}
 
             {step === "done" && (
               <div className="rounded-2xl border border-accent/40 bg-accent/10 p-4 text-sm">
-                <div className="flex items-center gap-2 font-semibold"><Check className="h-4 w-4 text-accent"/>Booking confirmed</div>
+                <div className="flex items-center gap-2 font-semibold"><Check className="h-4 w-4 text-accent"/>تم تأكيد الحجز</div>
                 <div className="mt-2 text-muted-foreground">
-                  {selService?.name} · {selDate && format(selDate, "PPP")} at {selTime}
+                  {selService?.name} · {selDate && format(selDate, "PPP")} الساعة {selTime}
                 </div>
               </div>
             )}
@@ -233,7 +264,7 @@ function PublicBookingPage() {
         </Card>
 
         <div className="mt-4 text-center text-xs text-muted-foreground">
-          Powered by <span className="font-semibold text-foreground">Bookly</span>
+          مدعوم بـ <span className="font-semibold text-foreground">بوكلي</span>
         </div>
       </div>
     </div>
