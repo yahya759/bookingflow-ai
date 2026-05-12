@@ -20,11 +20,11 @@ function AuthLayout() {
   }
 
   return (
-    <SidebarProvider>
-      <AppSidebar side="left" />
-      <SidebarInset>
+    <SidebarProvider style={{ direction: "ltr" }}>
+      <AppSidebar side="right" />
+      <SidebarInset style={{ direction: "rtl" }}>
         <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
-          <SidebarTrigger />
+          <SidebarTrigger style={{ direction: "ltr" }} />
         </header>
         <main className="flex-1 p-6">
           <Outlet />
