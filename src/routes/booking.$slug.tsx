@@ -335,7 +335,10 @@ function PublicBookingPage() {
             {step === "time" && (
               <div className="flex flex-wrap gap-2 pt-1">
                 {slots.map((t) => (
-                  <button key={t} onClick={() => pickTime(t)} className="rounded-xl border border-accent/40 bg-card/60 px-3.5 py-2 text-sm hover:bg-accent hover:text-accent-foreground">{t}</button>
+                  <button key={t} onClick={() => pickTime(t)} className="rounded-xl border border-accent/40 bg-card/60 px-3 py-2.5 text-sm hover:bg-accent hover:text-accent-foreground transition flex flex-col items-center gap-0.5">
+                    <span className="font-semibold">{t}</span>
+                    <span className="text-xs opacity-70">{addMinutes(t, selService!.duration_minutes)}</span>
+                  </button>
                 ))}
               </div>
             )}
