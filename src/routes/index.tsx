@@ -243,41 +243,51 @@ function AssistantPreview() {
 }
 
 function Pricing() {
-  const plans = [
-    { name: "المبتدئ", price: "مجاناً", desc: "للبدء وتجربة المنصة", features: ["حتى 30 حجز/شهر", "موظف واحد", "رابط حجز عام", "دعم بالبريد"], highlighted: false },
-    { name: "الاحترافي", price: "$29", suffix: "/شهر", desc: "للأعمال المتنامية", features: ["حجوزات غير محدودة", "حتى 10 موظفين", "تخصيص كامل للتدفق", "دعم على مدار الساعة"], highlighted: true },
-    { name: "المؤسسات", price: "تواصل معنا", desc: "لسلاسل الفروع", features: ["كل مميزات الاحترافي", "فروع متعددة", "تكاملات مخصصة", "مدير حساب"], highlighted: false },
+  const features = [
+    "حجوزات غير محدودة",
+    "موظفون غير محدودين",
+    "رابط حجز خاص بعملك",
+    "تخصيص كامل لخطوات الحجز",
+    "لوحة تحكم احترافية",
+    "إحصائيات وتقارير",
+    "دعم على مدار الساعة",
+    "تحديثات مجانية دائماً",
   ];
   return (
     <section id="pricing" className="mx-auto max-w-7xl px-6 py-24">
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold md:text-5xl">أسعار بسيطة وعادلة</h2>
-        <p className="mt-4 text-muted-foreground">اختر الخطة التي تناسب حجم أعمالك.</p>
+        <h2 className="text-3xl font-bold md:text-5xl">سعر واحد — كل شيء مشمول</h2>
+        <p className="mt-4 text-muted-foreground">بدون خطط معقدة. ادفع وانتهى.</p>
       </div>
-      <div className="mt-16 grid gap-6 lg:grid-cols-3">
-        {plans.map((p) => (
-          <Card key={p.name} className={`relative p-8 ${p.highlighted ? "border-accent shadow-elegant" : "glass"}`}>
-            {p.highlighted && (
-              <div className="absolute -top-3 right-1/2 translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">الأكثر شعبية</div>
-            )}
-            <h3 className="text-lg font-semibold">{p.name}</h3>
-            <div className="mt-4 flex items-baseline gap-1">
-              <span className="text-4xl font-bold">{p.price}</span>
-              {p.suffix && <span className="text-sm text-muted-foreground">{p.suffix}</span>}
+      <div className="mt-16 flex justify-center">
+        <Card className="relative w-full max-w-md border-accent p-10 shadow-elegant text-center">
+          <div className="absolute -top-4 right-1/2 translate-x-1/2 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-accent-foreground">
+            الخطة الوحيدة
+          </div>
+          <h3 className="text-2xl font-bold">الخطة الاحترافية</h3>
+          <div className="mt-6 flex items-baseline justify-center gap-1">
+            <span className="text-6xl font-extrabold gradient-text">100</span>
+            <div className="text-right">
+              <div className="text-lg font-semibold">ريال</div>
+              <div className="text-sm text-muted-foreground">/شهرياً</div>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground">{p.desc}</p>
-            <ul className="mt-6 space-y-2 text-sm">
-              {p.features.map((f) => (
-                <li key={f} className="flex items-center gap-2"><Check className="h-4 w-4 text-accent" />{f}</li>
-              ))}
-            </ul>
-            <Link to="/signup" className="mt-8 block">
-              <Button className={`w-full ${p.highlighted ? "bg-accent text-accent-foreground" : ""}`} variant={p.highlighted ? "default" : "outline"}>
-                ابدأ الآن
-              </Button>
-            </Link>
-          </Card>
-        ))}
+          </div>
+          <p className="mt-3 text-sm text-muted-foreground">كل ما تحتاجه لإدارة حجوزاتك باحترافية.</p>
+          <ul className="mt-8 space-y-3 text-sm text-right">
+            {features.map((f) => (
+              <li key={f} className="flex items-center gap-3">
+                <Check className="h-4 w-4 text-accent shrink-0" />
+                {f}
+              </li>
+            ))}
+          </ul>
+          <Link to="/signup" className="mt-10 block">
+            <Button size="lg" className="w-full bg-accent text-accent-foreground hover:opacity-90 h-12 text-base">
+              ابدأ الآن
+            </Button>
+          </Link>
+          <p className="mt-4 text-xs text-muted-foreground">لا توجد رسوم خفية · يمكن الإلغاء في أي وقت</p>
+        </Card>
       </div>
     </section>
   );
