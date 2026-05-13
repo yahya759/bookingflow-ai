@@ -168,7 +168,25 @@ function PublicBookingPage() {
       }));
 
     const allBooked = [...(existing ?? []), ...cartBooked] as any;
-    const computed = computeSlots(wh, selService.duration_minutes, allBooked, staffFilter, d);
+
+    let computed: string[];
+    if (staffFilter) {
+      // موظف محدد — اعرض فقط الأوقات اللي هو فاضي فيها
+      computed = computeSlots(wh, selService.duration_minutes, allBooked, staffFilter, d);
+    } else {
+      // أي موظف — اعرض الأوقات اللي فيها على الأقل موظف واحد فاضي
+      const eligible = eligibleStaff.length > 0 ? eligibleStaff : staff;
+      if (eligible.length === 0) {
+        computed = computeSlots(wh, selService.duration_minutes, allBooked, null, d);
+      } else {
+        const allSlots = new Set<string>();
+        for (const stf of eligible) {
+          const stfSlots = computeSlots(wh, selService.duration_minutes, allBooked, stf.id, d);
+          stfSlots.forEach((s) => allSlots.add(s));
+        }
+        computed = Array.from(allSlots).sort();
+      }
+    }
     setSlots(computed);
     if (computed.length === 0) {
       addBot("لا توجد أوقات متاحة هذا اليوم. جرب تاريخاً آخر.", `b-noslot-${dateStr}`);
@@ -383,7 +401,7 @@ function computeSlots(
   const bs = wh.break_start ? toMin(wh.break_start) : null;
   const be = wh.break_end ? toMin(wh.break_end) : null;
   const taken = existing
-    .filter((e) => staffFilter == null ? true : e.staff_id === staffFilter)
+    .filter((e) => staffFilter != null ? e.staff_id === staffFilter : false)
     .map((e) => [toMin(e.start_time), toMin(e.end_time)] as [number, number]);
 
   // احسب الوقت الحالي بالدقائق إذا كان التاريخ هو اليوم
