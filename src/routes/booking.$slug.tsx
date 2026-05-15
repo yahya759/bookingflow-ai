@@ -61,6 +61,7 @@ function PublicBookingPage() {
   const [slots, setSlots] = useState<string[]>([]);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -239,6 +240,7 @@ function PublicBookingPage() {
       staff_id: item.staff !== "any" ? (item.staff as Stf).id : null,
       customer_name: name.trim(),
       customer_phone: phone.trim(),
+      customer_email: email.trim() || null,
       booking_date: format(item.date, "yyyy-MM-dd"),
       start_time: item.time,
       end_time: addMinutes(item.time, item.service.duration_minutes),
