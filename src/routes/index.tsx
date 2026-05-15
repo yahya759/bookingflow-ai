@@ -9,8 +9,8 @@ import {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Bookly — أنشئ مساعد الحجز الذكي الخاص بك" },
-      { name: "description", content: "منصة لا-كود لبناء تجربة حجز مخصصة لصالونك أو عيادتك. شارك رابطك مع عملائك واستقبل الحجوزات تلقائياً." },
+      { title: "بوكلي — نظام حجز مواعيد ذكي لعيادتك" },
+      { name: "description", content: "منصة لا-كود لبناء نظام حجز مواعيد لعيادتك. شارك رابطك مع عملائك واستقبل الحجوزات تلقائياً." },
     ],
   }),
   component: Landing,
@@ -40,7 +40,7 @@ function Header() {
           <div className="grid h-9 w-9 place-items-center rounded-xl bg-accent text-accent-foreground">
             <Sparkles className="h-5 w-5" />
           </div>
-          <span className="text-xl font-bold">Bookly</span>
+          <span className="text-xl font-bold">بوكلي</span>
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           <a href="#features" className="text-sm text-muted-foreground hover:text-foreground">المميزات</a>
@@ -63,18 +63,18 @@ function Hero() {
       <div className="relative mx-auto max-w-5xl px-6 py-24 text-center md:py-32">
         <div className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border/60 bg-card/40 px-4 py-1.5 text-xs text-muted-foreground glass">
           <Sparkles className="h-3.5 w-3.5 text-accent" />
-          منصة بدون كود لإدارة الحجوزات
+          نظام حجز مواعيد للعيادات
         </div>
         <h1 className="text-4xl font-extrabold leading-tight md:text-6xl lg:text-7xl">
           أنشئ <span className="gradient-text">مساعد الحجز الذكي</span> الخاص بك
         </h1>
         <p className="mx-auto mt-6 max-w-2xl text-lg text-muted-foreground md:text-xl">
-          صمّم تجربة حجز مخصصة لصالونك أو عيادتك بدون أي برمجة. شارك رابطك مع عملائك واستقبل الحجوزات تلقائياً.
+          صمّم نظام حجز مواعيد احترافي لعيادتك بدون أي برمجة. شارك رابطك مع مرضاك واستقبل الحجوزات تلقائياً.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link to="/signup">
             <Button size="lg" className="h-12 bg-accent px-8 text-base text-accent-foreground shadow-elegant hover:opacity-90">
-              ابدأ تجربتك المجانية
+              ابدأ الآن مجاناً
               <ArrowLeft className="mr-2 h-4 w-4 rtl:rotate-180" />
             </Button>
           </Link>
@@ -96,7 +96,7 @@ function Hero() {
 
 const features = [
   { icon: Workflow, title: "بنّاء تدفق مرئي", desc: "صمم رحلة الحجز خطوة بخطوة بسحب وإفلات بسيط." },
-  { icon: Users, title: "إدارة الموظفين", desc: "أضف موظفيك، حدد أوقات عملهم والخدمات التي يقدمونها." },
+  { icon: Users, title: "إدارة الأطباء", desc: "أضف أطباءك، حدد أوقات عملهم وأنواع الكشوفات التي يقدمونها." },
   { icon: Calendar, title: "تقويم ذكي", desc: "إخفاء تلقائي للأوقات غير المتاحة ومنع الحجز المزدوج." },
   { icon: MessageSquare, title: "واجهة دردشة", desc: "تجربة حجز تفاعلية تشبه المساعد الذكي لعملائك." },
   { icon: LayoutDashboard, title: "لوحة تحكم احترافية", desc: "تحكم بكل الحجوزات والإحصائيات من مكان واحد." },
@@ -128,7 +128,7 @@ function Features() {
 function HowItWorks() {
   const steps = [
     { n: "01", t: "أنشئ حسابك", d: "سجّل خلال دقيقة وابدأ في إعداد عملك." },
-    { n: "02", t: "أضف خدماتك وفريقك", d: "حدد الأسعار، المدة، الموظفين وساعات العمل." },
+    { n: "02", t: "أضف أنواع الكشف وأطباءك", d: "حدد أنواع الكشف، التسعير، الأطباء وساعات العيادة." },
     { n: "03", t: "صمّم تدفق الحجز", d: "اختر الخطوات التي يمر بها عميلك بضغطة زر." },
     { n: "04", t: "شارك رابطك", d: "أرسل رابط الحجز لعملائك واستقبل الحجوزات." },
   ];
@@ -163,7 +163,7 @@ function DashboardPreview() {
             تابع حجوزاتك القادمة، أرباحك اليومية، وأداء فريقك من شاشة واحدة أنيقة وبسيطة.
           </p>
           <ul className="mt-6 space-y-3 text-sm">
-            {["إحصائيات مباشرة", "تقويم تفاعلي", "إدارة الموظفين والخدمات", "إعدادات قابلة للتخصيص"].map((x) => (
+            {["إحصائيات مباشرة", "تقويم تفاعلي", "إدارة الأطباء والخدمات", "إعدادات قابلة للتخصيص"].map((x) => (
               <li key={x} className="flex items-center gap-2"><Check className="h-4 w-4 text-accent" />{x}</li>
             ))}
           </ul>
@@ -179,7 +179,7 @@ function DashboardPreview() {
               </div>
             </div>
             <div className="grid grid-cols-3 gap-3">
-              {[{l:"Bookings",v:"24"},{l:"Revenue",v:"$1.2k"},{l:"New",v:"8"}].map((s)=> (
+              {[{l:"المواعيد",v:"24"},{l:"الإيرادات",v:"$1.2k"},{l:"جديد",v:"8"}].map((s)=> (
                 <div key={s.l} className="rounded-xl border border-border/60 p-4">
                   <div className="text-[10px] uppercase text-muted-foreground">{s.l}</div>
                   <div className="mt-1 text-xl font-bold">{s.v}</div>
@@ -187,7 +187,7 @@ function DashboardPreview() {
               ))}
             </div>
             <div className="mt-4 space-y-2">
-              {["09:00 — Haircut · Ahmed","10:30 — Color · Sara","12:00 — Massage · Lina"].map((b)=>(
+              {["09:00 — كشف عام · د. أحمد","10:30 — استشارة · د. سارة","12:00 — متابعة · د. لينا"].map((b)=>(
                 <div key={b} className="flex items-center justify-between rounded-xl bg-secondary/60 px-4 py-3 text-sm">
                   <span>{b}</span>
                   <span className="text-xs text-accent">Confirmed</span>
@@ -211,14 +211,14 @@ function AssistantPreview() {
               <div className="mb-4 flex items-center gap-2">
                 <div className="grid h-8 w-8 place-items-center rounded-full bg-accent text-accent-foreground"><Bot className="h-4 w-4"/></div>
                 <div>
-                  <div className="text-sm font-semibold">Booking Assistant</div>
+                  <div className="text-sm font-semibold">مساعد الحجز</div>
                   <div className="text-[10px] text-accent">● Online</div>
                 </div>
               </div>
               <div className="space-y-2 text-sm">
-                <div className="max-w-[80%] rounded-2xl bg-secondary px-4 py-2">Hi! Which service would you like to book?</div>
-                <div className="ml-auto max-w-[80%] rounded-2xl bg-accent px-4 py-2 text-accent-foreground">Haircut</div>
-                <div className="max-w-[80%] rounded-2xl bg-secondary px-4 py-2">Great. Pick a time:</div>
+                <div className="max-w-[80%] rounded-2xl bg-secondary px-4 py-2">مرحباً! ما نوع الكشف المطلوب؟</div>
+                <div className="ml-auto max-w-[80%] rounded-2xl bg-accent px-4 py-2 text-accent-foreground">كشف عام</div>
+                <div className="max-w-[80%] rounded-2xl bg-secondary px-4 py-2">ممتاز. اختر الوقت المناسب:</div>
                 <div className="ml-auto flex max-w-[80%] flex-wrap gap-1">
                   {["10:00","10:30","11:00"].map(t=> <span key={t} className="rounded-lg border border-accent/40 px-3 py-1 text-xs">{t}</span>)}
                 </div>
@@ -299,8 +299,8 @@ function CTA() {
       <div className="relative overflow-hidden rounded-3xl border border-border/60 bg-card p-12 text-center shadow-elegant md:p-20">
         <div className="absolute inset-0 bg-hero-glow" />
         <div className="relative">
-          <h2 className="text-3xl font-bold md:text-5xl">جاهز لتحويل طريقة استقبال الحجوزات؟</h2>
-          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">انضم لمئات الأعمال التي تستخدم Bookly لإدارة حجوزاتها بذكاء.</p>
+          <h2 className="text-3xl font-bold md:text-5xl">جاهز لتحديث نظام مواعيد عيادتك؟</h2>
+          <p className="mx-auto mt-4 max-w-xl text-muted-foreground">انضم للعيادات التي تستخدم بوكلي لإدارة مواعيدها باحترافية.</p>
           <Link to="/signup" className="mt-8 inline-block">
             <Button size="lg" className="h-12 bg-accent px-10 text-base text-accent-foreground hover:opacity-90">ابدأ مجاناً الآن</Button>
           </Link>
@@ -316,7 +316,7 @@ function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 text-sm text-muted-foreground md:flex-row">
         <div className="flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-accent" />
-          <span>© {new Date().getFullYear()} Bookly. جميع الحقوق محفوظة.</span>
+          <span>© {new Date().getFullYear()} بوكلي. جميع الحقوق محفوظة.</span>
         </div>
         <div className="flex gap-6">
           <a href="#features" className="hover:text-foreground">المميزات</a>
