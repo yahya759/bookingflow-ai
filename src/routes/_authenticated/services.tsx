@@ -90,7 +90,7 @@ function ServicesPage() {
 
       {services.length === 0 ? (
         <Card className="p-12 text-center">
-          <Scissors className="mx-auto h-10 w-10 text-muted-foreground" />
+          <Stethoscope className="mx-auto h-10 w-10 text-muted-foreground" />
           <p className="mt-3 text-sm text-muted-foreground">لا توجد أنواع كشف بعد. أضف أولى أنواع كشفك.</p>
         </Card>
       ) : (

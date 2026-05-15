@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarCheck, Users, Scissors, DollarSign, ExternalLink, Copy } from "lucide-react";
+import { CalendarCheck, Users, Stethoscope, DollarSign, ExternalLink, Copy } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
@@ -49,7 +49,7 @@ function Dashboard() {
 
   const cards = [
     { label: "الحجوزات القادمة", value: stats.upcoming, icon: CalendarCheck, accent: true },
-    { label: "أنواع الكشف", value: stats.services, icon: Scissors },
+    { label: "أنواع الكشف", value: stats.services, icon: Stethoscope },
     { label: "الأطباء", value: stats.staff, icon: Users },
     { label: "الإيرادات (اليوم+)", value: `${stats.revenue.toFixed(0)} ₪`, icon: DollarSign },
   ];

@@ -1,6 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
-  LayoutDashboard, Scissors, Users, Clock, Workflow,
+  LayoutDashboard, Stethoscope, Users, Clock, Workflow,
   CalendarCheck, Settings, Sparkles, LogOut, Sun, Moon, Menu, X,
 } from "lucide-react";
 import { useState } from "react";
@@ -9,7 +9,7 @@ import { useTheme } from "@/routes/__root";
 
 const items = [
   { title: "لوحة التحكم", url: "/dashboard", icon: LayoutDashboard },
-  { title: "أنواع الكشف", url: "/services", icon: Scissors },
+  { title: "أنواع الكشف", url: "/services", icon: Stethoscope },
   { title: "الأطباء", url: "/staff", icon: Users },
   { title: "ساعات العمل", url: "/hours", icon: Clock },
   { title: "منشئ الخطوات", url: "/flow", icon: Workflow },
