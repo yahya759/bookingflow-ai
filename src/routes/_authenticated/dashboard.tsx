@@ -49,8 +49,8 @@ function Dashboard() {
 
   const cards = [
     { label: "الحجوزات القادمة", value: stats.upcoming, icon: CalendarCheck, accent: true },
-    { label: "الخدمات", value: stats.services, icon: Scissors },
-    { label: "الموظفون", value: stats.staff, icon: Users },
+    { label: "أنواع الكشف", value: stats.services, icon: Scissors },
+    { label: "الأطباء", value: stats.staff, icon: Users },
     { label: "الإيرادات (اليوم+)", value: `${stats.revenue.toFixed(0)} ₪`, icon: DollarSign },
   ];
 
@@ -98,7 +98,7 @@ function Dashboard() {
               <div key={b.id} className="flex items-center justify-between py-3 text-sm">
                 <div>
                   <div className="font-medium">{b.customer_name}</div>
-                  <div className="text-xs text-muted-foreground">{b.services?.name ?? "—"} · {b.staff?.name ?? "أي موظف"}</div>
+                  <div className="text-xs text-muted-foreground">{b.services?.name ?? "—"} · {b.staff?.name ?? "أي طبيب"}</div>
                 </div>
                 <div className="text-start text-xs">
                   <div>{b.booking_date} · {b.start_time?.slice(0,5)}</div>

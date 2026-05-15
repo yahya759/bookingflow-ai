@@ -132,7 +132,7 @@ function PublicBookingPage() {
 
   const pickStaff = (s: Stf | "any") => {
     setSelStaff(s);
-    addUser(s === "any" ? "أي موظف متاح" : s.name, `u-stf-${Date.now()}`);
+    addUser(s === "any" ? "أي طبيب متاح" : s.name, `u-stf-${Date.now()}`);
     addBot(getLabel("date"), `b-date-${Date.now()}`);
     setStep("date");
   };
@@ -158,7 +158,7 @@ function PublicBookingPage() {
       .eq("booking_date", dateStr)
       .eq("status", "confirmed");
 
-    // أضف حجوزات السلة كـ "محجوزة" لنفس التاريخ والموظف
+    // أضف حجوزات السلة كـ "محجوزة" لنفس التاريخ والطبيب
     const cartBooked = cart
       .filter((c) => format(c.date, "yyyy-MM-dd") === dateStr)
       .map((c) => ({
@@ -171,10 +171,10 @@ function PublicBookingPage() {
 
     let computed: string[];
     if (staffFilter) {
-      // موظف محدد — اعرض فقط الأوقات اللي هو فاضي فيها
+      // طبيب محدد — اعرض فقط الأوقات اللي هو فاضي فيها
       computed = computeSlots(wh, selService.duration_minutes, allBooked, staffFilter, d);
     } else {
-      // أي موظف — اعرض الأوقات اللي فيها على الأقل موظف واحد فاضي
+      // أي طبيب — اعرض الأوقات اللي فيها على الأقل طبيب واحد فاضي
       const eligible = eligibleStaff.length > 0 ? eligibleStaff : staff;
       if (eligible.length === 0) {
         computed = computeSlots(wh, selService.duration_minutes, allBooked, null, d);
@@ -314,7 +314,7 @@ function PublicBookingPage() {
 
             {step === "staff" && (
               <div className="flex flex-wrap gap-2 pt-1">
-                <button onClick={() => pickStaff("any")} className="rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-sm hover:border-accent">أي موظف متاح</button>
+                <button onClick={() => pickStaff("any")} className="rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-sm hover:border-accent">أي طبيب متاح</button>
                 {eligibleStaff.map((s) => (
                   <button key={s.id} onClick={() => pickStaff(s)} className="flex items-center gap-2 rounded-2xl border border-border/70 bg-card/60 px-4 py-3 text-sm hover:border-accent">
                     {s.image_url ? <img src={s.image_url} className="h-6 w-6 rounded-full object-cover" alt=""/> : <div className="grid h-6 w-6 place-items-center rounded-full bg-accent/15 text-[10px] text-accent">{s.name.charAt(0)}</div>}

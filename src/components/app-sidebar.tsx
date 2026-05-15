@@ -9,8 +9,8 @@ import { useTheme } from "@/routes/__root";
 
 const items = [
   { title: "لوحة التحكم", url: "/dashboard", icon: LayoutDashboard },
-  { title: "الخدمات", url: "/services", icon: Scissors },
-  { title: "الموظفون", url: "/staff", icon: Users },
+  { title: "أنواع الكشف", url: "/services", icon: Scissors },
+  { title: "الأطباء", url: "/staff", icon: Users },
   { title: "ساعات العمل", url: "/hours", icon: Clock },
   { title: "منشئ الخطوات", url: "/flow", icon: Workflow },
   { title: "الحجوزات", url: "/bookings", icon: CalendarCheck },

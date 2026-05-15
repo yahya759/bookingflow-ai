@@ -17,7 +17,7 @@ export const Route = createFileRoute("/_authenticated/flow")({
 interface Step { id: string; step_key: string; position: number; enabled: boolean; custom_label: string | null; }
 
 const ICONS: Record<string, any> = { welcome: MessageSquare, service: Scissors, staff: Users, date: Calendar, time: Clock, confirm: CheckCircle2 };
-const DEFAULT_LABEL: Record<string,string> = { welcome:"ترحيب", service:"اختر الخدمة", staff:"اختر الموظف", date:"اختر التاريخ", time:"اختر الوقت", confirm:"تأكيد الحجز" };
+const DEFAULT_LABEL: Record<string,string> = { welcome:"ترحيب", service:"اختر النوع كشف", staff:"اختر الموظف", date:"اختر التاريخ", time:"اختر الوقت", confirm:"تأكيد الحجز" };
 
 function FlowPage() {
   const { business } = useBusiness();

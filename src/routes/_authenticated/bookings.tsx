@@ -115,9 +115,9 @@ function BookingsPage() {
                   <span className="flex items-center gap-1"><Calendar className="h-3 w-3"/>{b.booking_date} الساعة {b.start_time?.slice(0,5)}</span>
                 </div>
                 <div className="text-sm">
-                  <span className="text-muted-foreground">الخدمة: </span>{b.services?.name ?? "—"}
+                  <span className="text-muted-foreground">النوع كشف: </span>{b.services?.name ?? "—"}
                   <span className="mx-2 text-muted-foreground">·</span>
-                  <span className="text-muted-foreground">الموظف: </span>{b.staff?.name ?? "أي موظف"}
+                  <span className="text-muted-foreground">الطبيب: </span>{b.staff?.name ?? "أي طبيب"}
                 </div>
                 {/* عرض الملاحظة إذا موجودة */}
                 {b.notes && (
@@ -225,7 +225,7 @@ function BookingsPage() {
                   }`}>{statusLabel[b.status] ?? b.status}</span>
                 </div>
                 <div className="mt-1 text-xs text-muted-foreground">
-                  {b.services?.name ?? "—"} · {b.staff?.name ?? "أي موظف"}
+                  {b.services?.name ?? "—"} · {b.staff?.name ?? "أي طبيب"}
                 </div>
                 {b.notes && (
                   <div className="mt-2 flex items-start gap-1.5 rounded bg-accent/5 px-2 py-1.5 text-xs text-muted-foreground">

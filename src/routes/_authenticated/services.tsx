@@ -12,7 +12,7 @@ import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/services")({
-  head: () => ({ meta: [{ title: "الخدمات — بوكلي" }] }),
+  head: () => ({ meta: [{ title: "أنواع الكشف — بوكلي" }] }),
   component: ServicesPage,
 });
 
@@ -48,12 +48,12 @@ function ServicesPage() {
       ? await supabase.from("services").update(payload).eq("id", editing.id)
       : await supabase.from("services").insert(payload);
     if (error) return toast.error(error.message);
-    toast.success(editing ? "تم تحديث الخدمة" : "تم إضافة الخدمة");
+    toast.success(editing ? "تم تحديث النوع كشف" : "تم إضافة النوع كشف");
     setOpen(false); load();
   };
 
   const remove = async (id: string) => {
-    if (!confirm("هل تريد حذف هذه الخدمة؟")) return;
+    if (!confirm("هل تريد حذف هذه النوع كشف؟")) return;
     const { error } = await supabase.from("services").delete().eq("id", id);
     if (error) return toast.error(error.message);
     toast.success("تم الحذف"); load();
@@ -63,15 +63,15 @@ function ServicesPage() {
     <div className="mx-auto max-w-5xl space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">الخدمات</h1>
-          <p className="mt-1 text-sm text-muted-foreground">أدر الخدمات التي يمكن لعملائك حجزها.</p>
+          <h1 className="text-2xl font-bold">أنواع الكشف</h1>
+          <p className="mt-1 text-sm text-muted-foreground">أدر أنواع الكشف التي يمكن لعملائك حجزها.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openNew} className="bg-accent text-accent-foreground"><Plus className="h-4 w-4 ml-1"/>إضافة خدمة</Button>
+            <Button onClick={openNew} className="bg-accent text-accent-foreground"><Plus className="h-4 w-4 ml-1"/>إضافة نوع كشف</Button>
           </DialogTrigger>
           <DialogContent>
-            <DialogHeader><DialogTitle>{editing ? "تعديل الخدمة" : "خدمة جديدة"}</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{editing ? "تعديل النوع كشف" : "نوع كشف جديدة"}</DialogTitle></DialogHeader>
             <div className="space-y-4">
               <div><Label>الاسم</Label><Input value={form.name} onChange={(e)=>setForm({...form, name: e.target.value})} className="mt-1.5"/></div>
               <div className="grid grid-cols-2 gap-3">
@@ -91,7 +91,7 @@ function ServicesPage() {
       {services.length === 0 ? (
         <Card className="p-12 text-center">
           <Scissors className="mx-auto h-10 w-10 text-muted-foreground" />
-          <p className="mt-3 text-sm text-muted-foreground">لا توجد خدمات بعد. أضف أولى خدماتك.</p>
+          <p className="mt-3 text-sm text-muted-foreground">لا توجد أنواع كشف بعد. أضف أولى أنواع كشفك.</p>
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
