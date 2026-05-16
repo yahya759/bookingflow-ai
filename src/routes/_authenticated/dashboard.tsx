@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarCheck, Users, Stethoscope, DollarSign, ExternalLink, Copy } from "lucide-react";
+import { CalendarCheck, Users, Stethoscope, DollarSign, ExternalLink, Copy, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
@@ -17,7 +17,7 @@ function Dashboard() {
   const [stats, setStats] = useState({ upcoming: 0, services: 0, staff: 0, revenue: 0 });
   const [recent, setRecent] = useState<any[]>([]);
 
-  useEffect(() => {
+  const loadStats = async () => {
     if (!business) return;
     (async () => {
       const today = new Date().toISOString().slice(0, 10);
@@ -32,7 +32,9 @@ function Dashboard() {
       setStats({ upcoming: upcoming ?? 0, services: svc ?? 0, staff: stf ?? 0, revenue });
       setRecent(rec ?? []);
     })();
-  }, [business?.id]);
+  };
+
+  useEffect(() => { loadStats(); }, [business?.id]);
 
   const publicUrl = business ? `${typeof window !== "undefined" ? window.location.origin : ""}/booking/${business.slug}` : "";
 
@@ -69,6 +71,7 @@ function Dashboard() {
             <a href={publicUrl} target="_blank" rel="noreferrer">
               <Button size="icon" variant="ghost" className="h-7 w-7"><ExternalLink className="h-3.5 w-3.5"/></Button>
             </a>
+            <Button size="icon" variant="ghost" className="h-7 w-7" onClick={() => { loadStats(); toast.success("تم التحديث"); }} title="تحديث"><RefreshCw className="h-3.5 w-3.5"/></Button>
           </Card>
         )}
       </div>
