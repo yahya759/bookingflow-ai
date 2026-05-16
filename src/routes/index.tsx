@@ -48,7 +48,7 @@ function Header() {
           <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground">الأسعار</a>
         </nav>
         <div className="flex items-center gap-2">
-          <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank"><Button variant="ghost" size="sm">تواصل معنا</Button></a>
+          <Link to="/login"><Button variant="ghost" size="sm">تسجيل الدخول</Button></Link>
           <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank"><Button size="sm" className="bg-accent text-accent-foreground hover:opacity-90">ابدأ الآن</Button></a>
         </div>
       </div>
