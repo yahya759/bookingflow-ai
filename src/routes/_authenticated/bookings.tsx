@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Phone, User as UserIcon, Calendar, CalendarCheck, FileText, History } from "lucide-react";
+import { Phone, User as UserIcon, Calendar, CalendarCheck, FileText, History, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useBusiness } from "@/hooks/use-business";
 import { toast } from "sonner";
@@ -157,8 +157,15 @@ function BookingsPage() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold">الحجوزات</h1>
-        <p className="mt-1 text-sm text-muted-foreground">جميع مواعيدك في مكان واحد.</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">الحجوزات</h1>
+            <p className="mt-1 text-sm text-muted-foreground">جميع مواعيدك في مكان واحد.</p>
+          </div>
+          <Button variant="outline" size="sm" onClick={() => { load(); toast.success("تم تحديث الحجوزات"); }} className="flex items-center gap-2">
+            <RefreshCw className="h-4 w-4" /> تحديث
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="upcoming">
