@@ -48,8 +48,8 @@ function Header() {
           <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground">الأسعار</a>
         </nav>
         <div className="flex items-center gap-2">
-          <a href="https://wa.me/970597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank"><Button variant="ghost" size="sm">تواصل معنا</Button></a>
-          <a href="https://wa.me/970597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank"><Button size="sm" className="bg-accent text-accent-foreground hover:opacity-90">ابدأ الآن</Button></a>
+          <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank"><Button variant="ghost" size="sm">تواصل معنا</Button></a>
+          <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank"><Button size="sm" className="bg-accent text-accent-foreground hover:opacity-90">ابدأ الآن</Button></a>
         </div>
       </div>
     </header>
@@ -72,7 +72,7 @@ function Hero() {
           صمّم نظام حجز مواعيد احترافي لعيادتك بدون أي برمجة. شارك رابطك مع مرضاك واستقبل الحجوزات تلقائياً.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href="https://wa.me/970597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank">
+          <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank">
             <Button size="lg" className="h-12 bg-accent px-8 text-base text-accent-foreground shadow-elegant hover:opacity-90">
               ابدأ الآن — واتساب
               <ArrowLeft className="mr-2 h-4 w-4 rtl:rotate-180" />
@@ -281,7 +281,7 @@ function Pricing() {
               </li>
             ))}
           </ul>
-          <a href="https://wa.me/970597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank" className="mt-10 block"><Button size="lg" className="w-full bg-accent text-accent-foreground hover:opacity-90 h-12 text-base">ابدأ الآن — واتساب</Button></a>
+          <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank" className="mt-10 block"><Button size="lg" className="w-full bg-accent text-accent-foreground hover:opacity-90 h-12 text-base">ابدأ الآن — واتساب</Button></a>
           <p className="mt-4 text-xs text-muted-foreground">لا توجد رسوم خفية · يمكن الإلغاء في أي وقت</p>
         </Card>
       </div>
@@ -297,7 +297,7 @@ function CTA() {
         <div className="relative">
           <h2 className="text-3xl font-bold md:text-5xl">جاهز لتحديث نظام مواعيد عيادتك؟</h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">انضم للعيادات التي تستخدم بوكلي لإدارة مواعيدها باحترافية.</p>
-          <a href="https://wa.me/970597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank" className="mt-8 inline-block"><Button size="lg" className="h-12 bg-accent px-10 text-base text-accent-foreground hover:opacity-90">تواصل معنا على واتساب</Button></a>
+          <a href="https://wa.me/972597741299?text=%D8%A3%D8%B1%D9%8A%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B4%D8%AA%D8%B1%D8%A7%D9%83%20%D9%81%D9%8A%20%D8%A8%D9%88%D9%83%D9%84%D9%8A" target="_blank" className="mt-8 inline-block"><Button size="lg" className="h-12 bg-accent px-10 text-base text-accent-foreground hover:opacity-90">تواصل معنا على واتساب</Button></a>
         </div>
       </div>
     </section>
