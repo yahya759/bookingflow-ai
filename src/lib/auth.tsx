@@ -23,13 +23,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setSession(s);
       setUser(s?.user ?? null);
     });
+
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
       setLoading(false);
     });
+
     return () => sub.subscription.unsubscribe();
   }, []);
+
+  // ✅ تحقق كل 30 ثانية إذا الحساب ممنوع — لو ممنوع اعمل logout فوري
+  useEffect(() => {
+    if (!session) return;
+
+    const check = async () => {
+      const { error } = await supabase.auth.refreshSession();
+      if (error) {
+        // الـ session انتهت أو الحساب ممنوع
+        await supabase.auth.signOut();
+      }
+    };
+
+    check(); // تحقق فور الدخول
+    const interval = setInterval(check, 30000); // كل 30 ثانية
+    return () => clearInterval(interval);
+  }, [session?.access_token]);
 
   const signIn: AuthCtx["signIn"] = async (email, password) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
