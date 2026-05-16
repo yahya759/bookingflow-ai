@@ -356,8 +356,8 @@ function PublicBookingPage() {
                 </button>
                 <div className="border-t border-border/40 pt-3">
                   <p className="mb-2 text-xs text-muted-foreground">{getLabel("info")}</p>
-                  <Input placeholder="اسمك" value={name} onChange={(e) => setName(e.target.value)} className="mb-2"/>
-                  <Input placeholder="رقم الهاتف" value={phone} onChange={(e) => setPhone(e.target.value)} className="mb-3"/>
+                  <Input placeholder="الاسم الكامل" value={name} onChange={(e) => setName(e.target.value)} className="mb-2"/>
+                  <Input placeholder="رقم الواتساب أو البريد الإلكتروني" value={phone} onChange={(e) => setPhone(e.target.value)} className="mb-3"/>
                   <Button onClick={submit} className="w-full bg-accent text-accent-foreground">
                     <Send className="h-4 w-4 ml-1"/>تأكيد {cart.length > 1 ? `${cart.length} حجوزات` : "الحجز"}
                   </Button>
